@@ -1,3 +1,21 @@
+-- Opcion 1: Funcion que devuelve el dia de la semana que fue la fecha ingresada --
+CREATE FUNCTION Semana (@fecha date)
+RETURNS varchar(10)
+AS
+BEGIN
+	DECLARE @fetch date
+	DECLARE @day varchar(10)
+		SET @fetch = (SELECT CONVERT(date, @fecha))
+		SET @fetch = (SELECT FORMAT(@fetch, 'dd/MM/yy')) 
+	    SET @day = (SELECT DATENAME(WEEKDAY, @fetch))
+RETURN @day
+END
+
+SELECT dbo.Semana('02/02/2022')
+
+DROP FUNCTION Semana
+ 
+-- Opcion 2: Stored Procedure que devuelve el dia de la semana que fue la fecha ingresada --
 CREATE PROC SP_Semana
 @fecha date
 	AS
@@ -9,7 +27,6 @@ CREATE PROC SP_Semana
 	    SELECT DATENAME(WEEKDAY, @fetch2)
 	END
 
--- Devuelve el dia de la semana que fue la fecha ingresada --
 EXEC SP_Semana '02/02/2022'
 
 DROP PROCEDURE SP_Semana
